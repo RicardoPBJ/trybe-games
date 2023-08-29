@@ -32,7 +32,7 @@ public class TrybeGamesDatabase
     public List<Game> GetGamesOwnedBy(Player playerEntry)
     {
         var gamesOwnedQuery = from game in this.Games
-                                where game.Id == playerEntry.Id
+                                where game.Players.Contains(playerEntry.Id)
                                 select game;
 
         return gamesOwnedQuery.ToList();
@@ -42,8 +42,17 @@ public class TrybeGamesDatabase
     // 7. Crie a funcionalidade de buscar todos os jogos junto do nome do estúdio desenvolvedor
     public List<GameWithStudio> GetGamesWithStudio()
     {
-        // Implementar
-        throw new NotImplementedException();                      
+        var gamesWithStudioQuery = from game in this.Games
+                                    join studio in this.GameStudios
+                                    on game.DeveloperStudio equals studio.Id
+                                    select new GameWithStudio
+                                    {
+                                        GameName = game.Name,
+                                        StudioName = studio.Name,
+                                        NumberOfPlayers = game.Players.Count
+                                    };
+
+        return gamesWithStudioQuery.ToList();
     }
     
     // 8. Crie a funcionalidade de buscar todos os diferentes Tipos de jogos dentre os jogos cadastrados
