@@ -140,6 +140,26 @@ public class TrybeGamesController
     // 2. Crie a funcionalidade de adicionar um novo estúdio de jogos ao banco de dados
     public void AddGameStudio()
     {
+        var studioName = this.Console.ReadLine();
+
+        if (string.IsNullOrEmpty(studioName))
+        {
+            Console.WriteLine("Nome inválido ou inexistente");
+            return;
+        }
+
+        var newGameStudio = new GameStudio()
+        {
+            Id = this.database.GameStudios.Count + 1,
+            Name = studioName
+        };
+
+        this.database.GameStudios.Add(newGameStudio);
+    }
+
+    // 3. Crie a funcionalidade de adicionar novo Jogo ao Banco de dados
+    public void AddGame()
+    {
         var gameName = this.Console.ReadLine();
 
         if (string.IsNullOrEmpty(gameName))
@@ -148,21 +168,34 @@ public class TrybeGamesController
             return;
         }
 
-        var newGame = new GameStudio()
+        var gameReleaseDate = this.Console.ReadLine();
+
+        if (string.IsNullOrEmpty(gameReleaseDate))
+        {
+            Console.WriteLine("Data de lançamento inválida ou inexistente");
+            return;
+        }
+
+        var gameType = this.Console.ReadLine();
+
+        if (string.IsNullOrEmpty(gameType))
+        {
+            Console.WriteLine("Tipo de jogo inválido ou inexistente");
+            return;
+        }
+
+        var newGame = new Game()
         {
             Id = this.database.Games.Count + 1,
-            Name = gameName
+            Name = gameName,
+            ReleaseDate = DateTime.ParseExact(gameReleaseDate, "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            GameType = (GameType)int.Parse(gameType)
+
         };
 
-        this.database.GameStudios.Add(newGame);
+        this.database.Games.Add(newGame);
     }
 
-    // 3. Crie a funcionalidade de adicionar novo Jogo ao Banco de dados
-    public void AddGame()
-    {
-        // implementar
-        Console.WriteLine("Ainda não é possível realizar essa funcionalidade!");
-    }
 
     public void ChangeGameStudio(Game game)
     {
